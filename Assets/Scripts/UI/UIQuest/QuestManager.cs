@@ -70,9 +70,9 @@ public class QuestManager : MonoBehaviour
         }
         else
         {
-            switch (GetCurrentQuest().ActionType.ActionTypeIndex)
+            switch ((ActionType)GetCurrentQuest().ActionType.ActionTypeIndex)
             {
-                case 3:
+                case ActionType.KillMonster:
                     param1 = MonsterKillCount;
                     if (MonsterKillCount >= GetCurrentQuest().CountToClear)
                     {
@@ -102,7 +102,7 @@ public class QuestManager : MonoBehaviour
     {
         // 퀘스트를 진행하는 액션을 실행한다.
         Quest quest = GetCurrentQuest();
-        int action = quest.ActionType.ActionTypeIndex;
+        int action = (int)quest.ActionType.ActionTypeIndex;
         QuestActions[action].Action(quest);
     }
 

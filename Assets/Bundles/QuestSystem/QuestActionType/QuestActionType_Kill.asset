@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1826c7def9d412941b3796de0081e6e3, type: 3}
   m_Name: QuestActionType_Kill
   m_EditorClassIdentifier: 
-  actionTypeIndex: 3
+  actionTypeIndex: 1

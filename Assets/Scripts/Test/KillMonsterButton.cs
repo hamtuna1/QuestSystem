@@ -8,7 +8,11 @@ public class KillMonsterButton : MonoBehaviour
     private int QuestID;
     public void OnClickKillMonsterButton()
     {
-        if (QuestManager.Instance.GetCurrentQuest().QuestID == QuestID)
+        Quest quest = QuestManager.Instance.GetCurrentQuest();
+        if(quest == null)
+            return;
+        
+        if (quest.QuestID == QuestID)
             QuestManager.Instance.MonsterKillCount++;
 
         if (QuestManager.Instance.QuestIsAllClear() == false)

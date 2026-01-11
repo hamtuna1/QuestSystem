@@ -60,7 +60,7 @@ public class UIQuestInfo : MonoBehaviour
 
         if (questState != QuestState.AllComplete)
         {
-            if (quest.ActionType.ActionTypeIndex == 3)
+            if ((ActionType)quest.ActionType.ActionTypeIndex == ActionType.KillMonster)
             {
                 description.Append($"\n({param1} / {quest.CountToClear})");
             }
