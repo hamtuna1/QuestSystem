@@ -56,6 +56,12 @@ public class QuestSystemWindow : EditorWindow
             if (confirm == true)
                 ExportAllQuestsToJson();
         }
+        if (GUILayout.Button("Export to CSV", GUILayout.Height(40)))
+        {
+            bool confirm = EditorUtility.DisplayDialog("Convert", "Convert To CSV?", "Convert", "Cancel");
+            if (confirm == true)
+                ExportAllQuestsToCSV();
+        }
         GUI.backgroundColor = Color.white;
     }
 
@@ -207,5 +213,49 @@ public class QuestSystemWindow : EditorWindow
         {
             AssetDatabase.Refresh();
         }
+    }
+
+    private void ExportAllQuestsToCSV()
+    {
+        if (questList.Count == 0)
+        {
+            EditorUtility.DisplayDialog("Alert", "No Quest To Export", "OK");
+            return;
+        }
+
+        string path = EditorUtility.SaveFilePanel("Save All Quests CSV", Application.dataPath, "AllQuestsData", "csv");
+        if (string.IsNullOrEmpty(path)) return;
+
+        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+        sb.AppendLine("UniqueID,QuestID,Tribe,QuestType,Title,Description,ZoneNumber,TargetIndex,CountToClear");
+
+        foreach (Quest quest in questList)
+        {
+            if (quest == null) continue;
+
+            string title = EscapeCSV(quest.Title);
+            string description = EscapeCSV(quest.Desciption);
+
+            sb.AppendLine($"{quest.UniqueID},{quest.QuestID},{quest.Tribe},{quest.QuestType},{title},{description},{quest.ZoneNumber},{quest.TargetIndex},{quest.CountToClear}");
+        }
+
+        File.WriteAllText(path, sb.ToString(), System.Text.Encoding.UTF8);
+        Debug.Log($"Saved Quest CSV");
+
+        if (path.StartsWith(Application.dataPath))
+        {
+            AssetDatabase.Refresh();
+        }
+    }
+
+    private string EscapeCSV(string str)
+    {
+        if (string.IsNullOrEmpty(str)) return "";
+        if (str.Contains(",") || str.Contains("\"") || str.Contains("\n"))
+        {
+            str = str.Replace("\"", "\"\"");
+            return $"\"{str}\"";
+        }
+        return str;
     }
 }
